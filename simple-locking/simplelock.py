@@ -27,19 +27,24 @@ def simpleLocking(inputOperation):
                     # if transaction is not blocked, remove the transaction from the blocked transaction list
                     blockedTransaction.remove(number)
             else : # if transaction is not blocked
-                print("[//] [Operation : {}]".format(operationTask) + " Transaction " + number + " commits\n")
-                for items in transactionTable[number]: # release all the locks held by the transaction
-                    print("[!!] [Operation : {}]".format(operationTask) + " Transaction " + number + " releases exclusive lock on item " + items +"\n")
-                    itemLockTable[items].remove(number) 
-                    # if no transaction is holding the lock on the item, remove the item from the item lock table
-                    if len(itemLockTable[items]) == 0: 
-                        del itemLockTable[items]
-                del transactionTable[number]
-                del inputOperation[0]
-                blocked = getBlockedTransaction(transactionTable)
-                for numbers in blocked:                    
-                    if not isStillBlocked(numbers, itemLockTable, transactionTable, inputOperation):
-                        blockedTransaction.remove(numbers)
+                if isTransactionStillHaveOperation(number, inputOperation):
+                    # if transaction still have operation, move the commit operation to the end of the schedule
+                    inputOperation.append(inputOperation[0])
+                    del inputOperation[0]
+                else :
+                    print("[//] [Operation : {}]".format(operationTask) + " Transaction " + number + " commits\n")
+                    for items in transactionTable[number]: # release all the locks held by the transaction
+                        print("[!!] [Operation : {}]".format(operationTask) + " Transaction " + number + " releases exclusive lock on item " + items +"\n")
+                        itemLockTable[items].remove(number) 
+                        # if no transaction is holding the lock on the item, remove the item from the item lock table
+                        if len(itemLockTable[items]) == 0: 
+                            del itemLockTable[items]
+                    del transactionTable[number]
+                    del inputOperation[0]
+                    blocked = getBlockedTransaction(transactionTable)
+                    for numbers in blocked:                    
+                        if not isStillBlocked(numbers, itemLockTable, transactionTable, inputOperation):
+                            blockedTransaction.remove(numbers)
         elif operationType == "R": # read item
             item = operation[0][2]
             if number in blockedTransaction: # if transaction is blocked
@@ -119,6 +124,17 @@ def getBlockedTransaction(blockedTransaction):
     for transaction in blockedTransaction:
         blocked.append(transaction)
     return blocked
+
+# before commit, check if there is still operation for the transaction
+
+def isTransactionStillHaveOperation(number, inputOperation):
+    for operation in inputOperation:
+        operation = operation.split()
+        currOperationType = operation[0][0]
+        currNumber = operation[0][1]
+        if currOperationType == "R" or currOperationType == "W":
+            if currNumber == number:
+                return True
 
 with open("transaction.txt", "r") as text:
     for line in text:
