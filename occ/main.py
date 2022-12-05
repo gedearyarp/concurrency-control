@@ -64,6 +64,7 @@ def execute_transaction(transaction):
                 LOGS.append((datetime.datetime.now(), transaction.get_id(), "W", str(record_name), str(str(record_name) + " = " + str(record_name) + " + " + str(global_increment))))
             transaction.set_finishTS()
             LOGS.append((transaction.get_finishTS(), transaction.get_id(), "C", "", ""))
+            time.sleep(2)
             executed = True
         else:
             LOGS.append((datetime.datetime.now(), transaction.get_id(), "A", "", "Validation fail, harus rollback"))
