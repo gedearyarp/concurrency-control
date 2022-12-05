@@ -10,3 +10,11 @@ Untuk menjalankan program untuk simple locking protocol , silahkan :
 * Jalankan command `python simplelock.py` atau `python3 simplelock.py` pada terminal
 
 ## 2. Serial Optimistic Concurrency Control (OCC)
+
+Untuk menjalankan program untuk serial optimistic concurrency control , silahkan :
+
+* Clone repository ini
+* Buka terminal dan arahkan terminal hingga ke folder occ
+* Buat file txt untuk setiap transaksi yang ingin dilakukan (1 file txt untuk setiap transaksi), misalkan T1.txt, T2.txt (untuk 2 transaksi)
+* Setiap file berisis statement seperti Read (R), Write (W) pada suatu record
+* Jalankan command `python main.py` pada terminal
