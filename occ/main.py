@@ -67,7 +67,7 @@ def execute_transaction(transaction):
             #time.sleep(2)
             executed = True
         else:
-            LOGS.append((datetime.datetime.now(), transaction.get_id(), "A", "", "Validation fail, harus rollback"))
+            LOGS.append((datetime.datetime.now(), transaction.get_id(), "Abort", "", "Validation fail, harus rollback"))
             transaction.clear_TS()
             local_records.clear()
             time.sleep(1)
