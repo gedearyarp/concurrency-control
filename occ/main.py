@@ -35,14 +35,14 @@ def execute_transaction(transaction):
                     local_records[statement[1]] = Record(RECORDS[statement[1]].read()[1])
                 write_timestamp = local_records[statement[1]].write(global_increment)
                 LOGS.append((write_timestamp, transaction.get_id(), str(str(statement[1]) + " = " + str(statement[1]) + " + " + str(global_increment)), "", "local, belum di write di database"))
-                time.sleep(0.000000001)
+                time.sleep(transaction.get_id()/100)
             else:
                 if statement[1] not in list(local_records.keys()):
                     read_timestamp, execution_result = RECORDS[statement[1]].read()
                 else:
                     read_timestamp, execution_result = local_records[statement[1]].read()
                 LOGS.append((read_timestamp, transaction.get_id(), statement[0], statement[1], (str(statement[1]) + " = " + str(execution_result))))
-                time.sleep(0.000000001)
+                time.sleep(transaction.get_id()/100)
         
         # 2) validation on Tj succeeds if for all Ti with TS(Ti) < TS(Tj) either one of the following condition holds:
         # - finishTS(Ti) < startTS(Tj)
@@ -64,7 +64,7 @@ def execute_transaction(transaction):
                 LOGS.append((datetime.datetime.now(), transaction.get_id(), "W", str(record_name), str(str(record_name) + " = " + str(record_name) + " + " + str(global_increment))))
             transaction.set_finishTS()
             LOGS.append((transaction.get_finishTS(), transaction.get_id(), "C", "", ""))
-            time.sleep(2)
+            #time.sleep(2)
             executed = True
         else:
             LOGS.append((datetime.datetime.now(), transaction.get_id(), "A", "", "Validation fail, harus rollback"))
