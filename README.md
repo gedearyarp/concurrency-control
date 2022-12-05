@@ -18,3 +18,4 @@ Untuk menjalankan program untuk serial optimistic concurrency control , silahkan
 * Buat file txt untuk setiap transaksi yang ingin dilakukan (1 file txt untuk setiap transaksi), misalkan T1.txt, T2.txt (untuk 2 transaksi)
 * Setiap file berisis statement seperti Read (R), Write (W) pada suatu record
 * Jalankan command `python main.py` pada terminal
+* Kemudian nanti akan diminta input dari user terkait jumlah transaksi yang ingin dilakukan dan letak file txt dari setiap transaksi
